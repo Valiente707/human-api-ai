@@ -119,31 +119,33 @@ The Google Doc is the system of record. Slack is the **alert layer** — short, 
 
 **Channel:** `#valor-intel-playbook` in `valor-promotions.slack.com` (channel ID `C0B2KJAUMQT`).
 
-### Primary path — Slack MCP from the Valor Intel project (recommended)
+### Primary path — Slack MCP (use this)
 
-You already have the Slack MCP connected in your Claude environment, so no setup is needed beyond making sure the same MCP is enabled on the **Valor Intel** project on claude.ai. From inside the project, just ask Claude:
+The Slack MCP is already connected in your Claude Code environment — that's the same connection that posted the channel-test message in `#valor-intel-playbook`. No webhook, no env var, no script to run. The `/valor-intel` skill calls `slack_send_message` directly when it asks "Post the Top 3 to #valor-intel-playbook?"
 
-> Post the Top 3 actionables to #valor-intel-playbook, formatted with a header and one bullet per actionable.
+If you ever want to post manually, just tell Claude in any session:
 
-Claude will use the MCP's `slack_send_message` tool. No webhook, no env vars, no script to run.
+> Post this to #valor-intel-playbook: <paste content>
 
-**Recommended Slack cadence:**
-- After step 5 of the weekly runbook, ask Claude in the project to post a single message titled `Valor Intel — Week of YYYY-MM-DD` with the Top 3 actionables (link out to the Google Doc for the full briefs).
+**Slack cadence (MCP):**
+- After step 5 of the weekly runbook, post a single message titled `Valor Intel — Week of YYYY-MM-DD` with the Top 3 actionables (link to the Google Doc for the full briefs).
 - For any `[Compliance]` item the operator judges material, post immediately as its own message titled `Compliance flag: <topic>` so it doesn't get buried in the weekly summary.
 
-### Fallback path — `valor_intel_slack.py` (only if you later automate)
+### Fallback path — `valor_intel_slack.py` (only if MCP is unavailable or you automate)
 
-If you ever want a scheduled/headless run (cron, GitHub Action, etc.) where no human is sitting in claude.ai, the repo has a stdlib-only Python script that posts via an Incoming Webhook:
+The repo has a stdlib-only Python script that posts via an Incoming Webhook. Use it only if (a) the Slack MCP isn't connected on the machine you're running from, or (b) you graduate to a scheduled/headless run (cron, GitHub Action) where no Claude session is involved.
 
+One-time setup:
 1. Create a Slack app at <https://api.slack.com/apps> → **From scratch** → workspace = valor-promotions.
 2. **Incoming Webhooks** → on → **Add New Webhook to Workspace** → pick `#valor-intel-playbook` → Allow.
 3. Copy the webhook URL and `export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."`.
-4. Run:
-   ```bash
-   python valor_intel_slack.py --title "Valor Intel — Week of 2026-05-11" --file weekly-actionables.md
-   ```
 
-Skip this section unless and until you actually need automation. For the manual weekly routine, the MCP path above is simpler.
+Send a message:
+```bash
+python valor_intel_slack.py --title "Valor Intel — Week of 2026-05-11" --file weekly-actionables.md
+```
+
+Full setup steps and CLI flags are also in the docstring at the top of `valor_intel_slack.py`. Don't bother setting this up until you actually need it — the MCP path above covers every manual scenario.
 
 ## 4. Google Doc template
 
