@@ -38,7 +38,13 @@ Four lenses Valor applies to every brief:
 5. **Create the Google Doc** "Valor Intel — Brief Archive" using the template in §4. Share with your content/sales leads.
 6. **Confirm the Slack MCP is connected** in your local Claude Code (the same one that posted the test message to `#valor-intel-playbook`). The `/valor-intel` skill will use it to post Top 3 actionables.
 
-**Verify:** open Claude Code in any directory and run:
+**Verify your environment** before Week 1:
+```bash
+./verify-setup.sh
+```
+Checks Python ≥3.12, that both skills are installed, that Reddit returns 200 from your IP (the cloud-block test that matters most), and prints a summary of optional source readiness (yt-dlp, Bluesky env vars, `INCLUDE_SOURCES`). Exits non-zero if any critical check fails.
+
+**End-to-end smoke test:** open Claude Code in any directory and run:
 ```
 /last30days "AI marketing platforms for medical and dental practices"
 ```
