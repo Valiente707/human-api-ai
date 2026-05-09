@@ -3,3 +3,8 @@ __pycache__/
 .venv/
 .DS_Store
 *.skill
+
+# Valor Intel: never commit a filled-in copy of the env file
+valor-intel/env
+valor-intel/env.local
+.env

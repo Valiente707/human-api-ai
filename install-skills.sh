@@ -38,8 +38,26 @@ fi
 ln -s "$VALOR_SRC" "$VALOR_LINK"
 echo "Linked $VALOR_LINK -> $VALOR_SRC"
 
-# 3. Python version check (last30days requires 3.12+)
+# 3. Provision env file at ~/.config/valor-intel/env (don't overwrite an existing one)
+ENV_DIR="${HOME}/.config/valor-intel"
+ENV_FILE="${ENV_DIR}/env"
+ENV_TEMPLATE="${VALOR_SRC}/env.template"
+mkdir -p "$ENV_DIR"
+if [[ -f "$ENV_FILE" ]]; then
+    echo "Env file already exists at $ENV_FILE (leaving it alone)."
+else
+    cp "$ENV_TEMPLATE" "$ENV_FILE"
+    chmod 600 "$ENV_FILE"
+    echo "Created $ENV_FILE (perms 600)."
+    echo "  -> Edit it and fill in your API keys before running /last30days."
+fi
 echo ""
+echo "To make your shell load the env file automatically, add this line"
+echo "to ~/.zshrc (or ~/.bashrc) once:"
+echo "    [ -r ~/.config/valor-intel/env ] && source ~/.config/valor-intel/env"
+echo "Then 'source ~/.zshrc' or open a new terminal."
+
+# 4. Python version check (last30days requires 3.12+)
 if command -v python3 >/dev/null; then
     py_version=$(python3 --version 2>&1 | awk '{print $2}')
     py_minor=$(echo "$py_version" | awk -F. '{print $1*100 + $2}')

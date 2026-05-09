@@ -83,21 +83,28 @@ Nothing to do. These work the moment you're on your laptop's normal network.
 | **Perplexity Sonar Pro** | OpenRouter account at <https://openrouter.ai>, generate a key, then:<br>`export OPENROUTER_API_KEY=sk-or-v1-...` | 5 min | Grounded web search with citations — pulls authoritative editorial coverage that engagement-ranked sources miss. **Pay-as-you-go (cheap, ~cents per query).** |
 | **Web (Brave Search)** | <https://brave.com/search/api> — generate a key, then:<br>`export BRAVE_API_KEY=BSA...` | 3 min | Editorial coverage, blog comparisons, vendor landing-page diffs. 2K free queries/month covers Valor's volume with margin. |
 
-### Enable everything at runtime
+### Where to put your API keys
 
-Add to your shell rc (`~/.zshrc` or `~/.bashrc`) so it's always on:
+All keys go into a single dedicated env file at **`~/.config/valor-intel/env`** with permissions `600` (only your user can read it). `./install-skills.sh` provisions an empty template at that path on first run; you fill in the values once.
 
-```bash
-# Valor Intel — full source coverage
-export INCLUDE_SOURCES=x,youtube,bluesky,tiktok,instagram,threads,pinterest,perplexity,web
-export BLUESKY_HANDLE="you.bsky.social"
-export BLUESKY_APP_PASSWORD="xxxx-xxxx-xxxx-xxxx"
-export SCRAPECREATORS_API_KEY="..."
-export OPENROUTER_API_KEY="sk-or-v1-..."
-export BRAVE_API_KEY="BSA..."
+```
+~/.config/valor-intel/env       # canonical secrets file (chmod 600)
 ```
 
-Run `./verify-setup.sh` after exporting — it confirms each env var is set and that auth-free sources are reachable. The `/valor-intel` skill will then query all 13 sources for every brief.
+To make your shell load it on startup, add **one line** to `~/.zshrc` (or `~/.bashrc`):
+```bash
+[ -r ~/.config/valor-intel/env ] && source ~/.config/valor-intel/env
+```
+
+Then `source ~/.zshrc` (or open a new terminal) and the env vars are available to Claude Code, the `/last30days` skill, and the `valor_intel_slack.py` fallback. The template at `valor-intel/env.template` documents every key with its sign-up URL.
+
+**Why a dedicated file** instead of pasting `export` lines straight into `~/.zshrc`:
+- One place to find / edit / back up to 1Password.
+- File permissions can be `600` without affecting your rc.
+- Easy to wipe and rotate: `rm ~/.config/valor-intel/env`.
+- Easier to keep in sync between machines (rsync / 1Password).
+
+After editing the file, run `./verify-setup.sh` — it sources `~/.config/valor-intel/env` automatically and reports which sources are enabled. The `/valor-intel` skill will then query all 13 sources for every brief.
 
 > **Source-name caveat:** the exact tokens in `INCLUDE_SOURCES` are documented in the cloned `~/.claude/skills/last30days/README.md`. If a name doesn't match (e.g., `twitter` vs `x`, `hn` vs `hackernews`), check that README — it's the source of truth.
 

@@ -7,6 +7,14 @@
 
 set -uo pipefail  # NOT -e: keep going through all checks
 
+# Source the user's env file if present, so we see the same env vars
+# /last30days will see when invoked from a freshly opened shell.
+ENV_FILE="${HOME}/.config/valor-intel/env"
+if [[ -r "$ENV_FILE" ]]; then
+    # shellcheck disable=SC1090
+    source "$ENV_FILE"
+fi
+
 GREEN="$(tput setaf 2 2>/dev/null || true)"
 YELLOW="$(tput setaf 3 2>/dev/null || true)"
 RED="$(tput setaf 1 2>/dev/null || true)"
@@ -21,6 +29,14 @@ pass() { echo "  ${GREEN}ok${RESET}   $*"; PASS=$((PASS+1)); }
 warn() { echo "  ${YELLOW}warn${RESET} $*"; WARN=$((WARN+1)); }
 fail() { echo "  ${RED}FAIL${RESET} $*"; FAIL=$((FAIL+1)); }
 section() { echo ""; echo "${BOLD}$*${RESET}"; }
+
+# ---------- Env file ----------
+section "Env file"
+if [[ -r "$ENV_FILE" ]]; then
+    pass "$ENV_FILE present (perms: $(stat -c '%a' "$ENV_FILE" 2>/dev/null || stat -f '%A' "$ENV_FILE" 2>/dev/null || echo '?'))"
+else
+    warn "$ENV_FILE missing — run ./install-skills.sh to provision it, or set env vars another way"
+fi
 
 # ---------- Python ----------
 section "Python"
