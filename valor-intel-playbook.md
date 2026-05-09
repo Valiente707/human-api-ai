@@ -46,6 +46,28 @@ You should get a brief with Reddit/HN items. If you get an empty brief or 403 er
 
 ---
 
+## 1a. Day 0 source setup checklist (15 min, materially better briefs)
+
+`last30days` works out of the box on Reddit / HN / Polymarket / GitHub from a residential IP, but those alone won't surface **competitor moves on X** or **product demos on YouTube** — exactly the signals Valor cares about most. The 15 minutes below makes the difference between a thin Week 1 brief and a useful one.
+
+| Source | Why it matters for Valor | Setup | Time |
+|---|---|---|---|
+| **X / Twitter** | Where competitor exec posts, product launches, pricing announcements, and healthcare-AI hot takes live. PatientPop / Tebra / Weave / NexHealth all post here. Drives the **[Competitor]** lens. | Open Chrome/Safari/Firefox and log into <https://x.com>. Stay logged in — the skill picks up the browser session automatically. No API key. | 1 min |
+| **YouTube** | Product demos for voice agents, patient-intake chatbots, AI scribes — the "is this real or vaporware?" check on competitors. Drives the **[Content]** and **[Competitor]** lenses. | macOS: `brew install yt-dlp` &nbsp;·&nbsp; other: `pipx install yt-dlp` | 2 min |
+| **Bluesky** | Smaller volume but high signal post-Twitter exodus; some healthcare-marketing voices have moved here. Drives the **[Sales]** and **[Content]** lenses. | Generate an app password at <https://bsky.app/settings/app-passwords>, then `export BLUESKY_HANDLE=you.bsky.social` and `export BLUESKY_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx`. | 3 min |
+
+**Skip for v1:** TikTok / Instagram / Threads / Pinterest (ScrapeCreators API — useful for patient-facing content, less relevant for B2B Valor sales) and Perplexity Sonar / Brave Search (paid, mostly redundant with the four lenses). Revisit only if the briefs feel thin after a month.
+
+**Enable the optional sources at runtime** by setting `INCLUDE_SOURCES` before invoking the skill (or add the line to your shell rc so it's always on):
+```
+export INCLUDE_SOURCES=x,youtube,bluesky
+/last30days "AI marketing platforms for medical and dental practices"
+```
+
+**Minimum viable for Week 1:** X login + yt-dlp. Bluesky is the cheap third add-on. Everything else can wait.
+
+---
+
 ## 2. Query catalog
 
 10 curated queries. Run each as `/last30days <query>` inside the Valor Intel project.
