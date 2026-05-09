@@ -21,19 +21,28 @@ Four lenses Valor applies to every brief:
 
 ---
 
-## 1. One-time setup (claude.ai)
+## 1. One-time setup (Claude Code on your laptop)
 
-1. **Get the skill file.** Download the latest `.skill` build from <https://github.com/mvanhorn/last30days-skill> (releases page or repo root — README documents the path). MIT-licensed, no auth needed for Reddit / HN / Polymarket / GitHub / Bluesky.
-2. **Create a claude.ai Project** named **"Valor Intel"**. In Project knowledge / system prompt, paste:
+> **Why local, not claude.ai web?** `last30days-skill` hits Reddit's public JSON API directly, and Reddit returns `403 Forbidden` to anonymous requests from datacenter IP ranges (which is what claude.ai's cloud sandbox uses). Running from your residential IP via Claude Code on your laptop is the path the skill was built for. The claude.ai upload path (`make-skill-bundle.sh` + `valor-intel.skill`) stays in the repo as a fallback for sharing with team members later, but the primary runtime is local.
 
-   > Valor Promotions Agents is a veteran-owned, AI-driven growth engine for healthcare practices (medical, dental, private practices), led by Mike Gilbert. Six precision systems: lead identification, patient reactivation, CRM management, lead scoring/nurturing, real-time analytics, anonymous-visitor capture. Competitors to watch by name: PatientPop / Tebra, Doctible, Weave, Solutionreach, NexHealth, Dialog Health.
-   >
-   > For every research brief in this project, tag each item with one or more of these four lenses — **Sales hook · Competitor move · Content angle · Compliance flag** — and pull a "Top 3 actionables for Valor this week" block to the top of the brief.
+**Steps:**
 
-3. **Upload the `.skill`** to the project via claude.ai's skill upload UI.
-4. **(Optional but recommended)** Also upload the **Valor Intel skill** at `valor-intel/SKILL.md` in this repo. It's a lightweight wrapper that lets you invoke the entire weekly routine (5 queries, four-lens tagging, Top 3 actionables, Slack post) in one shot. Composes with the upstream `last30days-skill`. Build the upload bundle with `./make-skill-bundle.sh` — it produces `valor-intel.skill` ready to drop into the claude.ai upload UI.
-5. **(Optional, +signal)** Provide browser tokens / API keys for X, YouTube, TikTok, Instagram per the skill README. Without them the skill still works on the free sources.
-6. **Create the Google Doc** "Valor Intel — Brief Archive" with the template in §4. Share with Mike + content/sales leads.
+1. **Install Claude Code** if you don't have it (<https://docs.anthropic.com/en/docs/claude-code>) and confirm Python 3.12+ (`python3 --version`). On macOS: `brew install python@3.12`.
+2. **Clone this repo** (the strategy repo) somewhere convenient on your machine, e.g. `~/code/human-api-ai`. Check out branch `claude/valor-promotions-strategy-ILhNy`.
+3. **Run the installer:**
+   ```bash
+   ./install-skills.sh
+   ```
+   This clones `last30days-skill` to `~/.claude/skills/last30days/` and symlinks `valor-intel/` to `~/.claude/skills/valor-intel/`. Re-run anytime to update.
+4. **(Optional, +signal)** Set up richer sources per the installer's printed hints — `brew install yt-dlp` for YouTube, stay logged into x.com in a browser, etc. Reddit / HN / Polymarket / GitHub work with zero config from your residential IP.
+5. **Create the Google Doc** "Valor Intel — Brief Archive" using the template in §4. Share with your content/sales leads.
+6. **Confirm the Slack MCP is connected** in your local Claude Code (the same one that posted the test message to `#valor-intel-playbook`). The `/valor-intel` skill will use it to post Top 3 actionables.
+
+**Verify:** open Claude Code in any directory and run:
+```
+/last30days "AI marketing platforms for medical and dental practices"
+```
+You should get a brief with Reddit/HN items. If you get an empty brief or 403 errors, you're on a cloud/datacenter IP — switch to your laptop's normal network.
 
 ---
 
