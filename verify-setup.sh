@@ -53,18 +53,16 @@ else
 fi
 
 # ---------- Skills installed ----------
-section "Skills installed at ~/.claude/skills"
-if [[ -f "$HOME/.claude/skills/last30days/SKILL.md" || \
-      -f "$HOME/.claude/skills/last30days/README.md" ]]; then
-    pass "last30days/ present"
-else
-    fail "last30days/ missing — run ./install-skills.sh"
-fi
+section "Local valor-intel skill"
 if [[ -f "$HOME/.claude/skills/valor-intel/SKILL.md" ]]; then
-    pass "valor-intel/ present"
+    pass "valor-intel/ present at ~/.claude/skills/valor-intel/"
 else
-    fail "valor-intel/ missing — run ./install-skills.sh"
+    fail "valor-intel/ missing at ~/.claude/skills/valor-intel/ — run ./install-skills.sh"
 fi
+# last30days installs via the Claude Code plugin marketplace, not a raw clone,
+# so its files live somewhere this script can't reliably check from outside
+# Claude Code. Just remind the user to install it inside Claude Code.
+warn "last30days plugin: this script can't verify it from outside Claude Code. Inside Claude Code, run: /plugin marketplace add mvanhorn/last30days-skill"
 
 # ---------- Reddit reachability (the real cloud-IP test) ----------
 section "Reddit reachability — this is the test that matters"

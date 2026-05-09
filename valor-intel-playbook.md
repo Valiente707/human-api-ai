@@ -33,10 +33,15 @@ Four lenses Valor applies to every brief:
    ```bash
    ./install-skills.sh
    ```
-   This clones `last30days-skill` to `~/.claude/skills/last30days/` and symlinks `valor-intel/` to `~/.claude/skills/valor-intel/`. Re-run anytime to update.
-4. **(Optional, +signal)** Set up richer sources per the installer's printed hints — `brew install yt-dlp` for YouTube, stay logged into x.com in a browser, etc. Reddit / HN / Polymarket / GitHub work with zero config from your residential IP.
-5. **Create the Google Doc** "Valor Intel — Brief Archive" using the template in §4. Share with your content/sales leads.
-6. **Confirm the Slack MCP is connected** in your local Claude Code (the same one that posted the test message to `#valor-intel-playbook`). The `/valor-intel` skill will use it to post Top 3 actionables.
+   This symlinks `valor-intel/` to `~/.claude/skills/valor-intel/`, provisions the API-key env file at `~/.config/valor-intel/env` (chmod 600), and prints the next step.
+4. **Install `last30days-skill` from inside Claude Code itself.** Open Claude Code and type:
+   ```
+   /plugin marketplace add mvanhorn/last30days-skill
+   ```
+   Approve the install when prompted. This is the upstream-supported path — it survives plugin updates cleanly. After install, both `/last30days` and `/valor-intel` are available as slash commands.
+5. **(Optional, +signal)** Set up richer sources per §1a — `brew install yt-dlp` for YouTube, stay logged into x.com in a browser, etc. Reddit / HN / Polymarket / GitHub work with zero config from your residential IP.
+6. **Create the Google Doc** "Valor Intel — Brief Archive" using the template in §4. Share with your content/sales leads.
+7. **Confirm the Slack MCP is connected** in your local Claude Code (the same one that posted the test message to `#valor-intel-playbook`). The `/valor-intel` skill will use it to post Top 3 actionables.
 
 **Verify your environment** before Week 1:
 ```bash
