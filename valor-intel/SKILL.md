@@ -19,6 +19,22 @@ Every brief should draw from **all 13 sources** the upstream skill supports — 
 
 Before running queries: if any source returns auth errors, **report them in the output** rather than silently dropping that source. The operator should know the brief is incomplete so they can fix the auth and re-run.
 
+## Perplexity cross-check (compliance-critical)
+
+The 12 social/engagement sources rank by community engagement — they surface what people are *saying*. Perplexity Sonar Pro returns grounded web search with citations — what authoritative sources have *published*. For Valor's domain, the gap matters most on **[Compliance]** items: community posts about HIPAA, FTC, and telehealth changes are frequently inaccurate or stale, and Perplexity is the corrective.
+
+When parsing each brief returned by `/last30days`:
+
+1. **Distinguish Perplexity items from engagement-ranked items.** Perplexity-sourced items have URL citations from authoritative domains (hhs.gov, ftc.gov, cms.gov, oig.hhs.gov, jama.com, hipaajournal.com, healthitsecurity.com, ama-assn.org, etc.) and lack engagement metrics. Tag them with `[Perplexity]` in addition to the four-lens label so the operator can see they came from grounded search.
+
+2. **For [Compliance] items, Perplexity is primary.** If a regulatory change appears in social signal but is NOT confirmed by a Perplexity citation, downgrade it in the brief to "rumor — unverified" and note the gap. If Perplexity surfaces an authoritative regulatory item that the social platforms missed entirely, surface it in the Top 3 actionables — that's exactly the value Perplexity adds for Valor.
+
+3. **For [Sales] / [Competitor] / [Content] items, engagement-ranked sources are primary, Perplexity is supplementary.** Use Perplexity to confirm dollar figures, dates, and quoted facts that a Reddit/X post claimed without citation. If a competitor announcement is on X but Perplexity hasn't indexed any authoritative coverage yet, mark it `early signal — not yet confirmed in editorial coverage`.
+
+4. **Queries 5, 6, and 10 are Perplexity-led.** HIPAA marketing (Q5), FTC healthcare advertising (Q6), and telehealth regulation (Q10) are precisely the topics where authoritative coverage trumps community signal. If Perplexity returns zero items on any of these three, **flag the brief as incomplete** and ask the operator to verify `OPENROUTER_API_KEY` is set and the call is reaching Sonar Pro. Do not synthesize Top 3 for the week without a Perplexity pass on these queries.
+
+This is where the Perplexity API earns its per-query cost: catching an FTC announcement that hadn't broken on Twitter yet, confirming a Reddit rumor about a HIPAA enforcement action, or surfacing a state telehealth rule change the social platforms ignored.
+
 ## Query catalog
 
 **Set A** (run on odd-numbered ISO weeks):
@@ -58,7 +74,7 @@ When invoked:
 
 1. **Determine the set.** From the current ISO week (odd → A, even → B) unless the operator specifies otherwise. State which set is running and why before kicking off.
 2. **Run the 5 queries.** For each query, call `/last30days <query>` and capture the returned brief.
-3. **Tag inline.** After each brief, append bracketed lens labels to every item, e.g. `[Sales] [Content]`. Dedupe stories that appear on multiple platforms — cite the highest-engagement source.
+3. **Tag inline + apply Perplexity cross-check.** Append bracketed lens labels to every item (`[Sales]`, `[Competitor]`, `[Content]`, `[Compliance]`) and add `[Perplexity]` to items sourced from Sonar Pro. Dedupe stories across platforms — cite the highest-engagement source. Apply the rules in the **Perplexity cross-check** section above: rumor/confirm regulatory items, mark early-signal competitor news, and abort the week if Q5/Q6/Q10 return zero Perplexity items.
 4. **Synthesize Top 3.** After all 5 briefs are in, write a single "Top 3 actionables for Valor this week" block — three single-sentence bullets, each stating: the actionable, the owner (Mike / sales / content / compliance), and the source link.
 5. **Assemble HTML output.** Use this exact structure:
 
