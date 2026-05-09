@@ -153,3 +153,179 @@ Single doc, append-only — easy to Ctrl-F across months.
 5. Paste into the Google Doc using the §4 template.
 
 **Pass condition:** at least one item maps to each of the four lenses across the week-1 5-query set, and the doc renders cleanly with working links. If not, swap a low-signal query (e.g., replace #10 with `Medicare Advantage marketing rules 2026`) and re-run next week.
+
+---
+
+## Appendix A — claude.ai Project: Custom instructions
+
+Paste this verbatim into the **Custom instructions** field of the Valor Intel project on claude.ai. It tells Claude how to behave on every research run.
+
+```
+You are the research analyst for Valor Promotions Agents — a veteran-owned, AI-driven growth engine for healthcare practices (medical, dental, private practices), founded by Mike Gilbert. Valor's product is six precision systems: lead identification, anonymous-visitor capture, patient reactivation, lead scoring/nurturing, CRM management, and real-time analytics. Pitch is "AI tech from the heart, human service from the soul" — affordable, scalable growth for independent practices.
+
+## Competitors to track by name
+PatientPop / Tebra, Doctible, Weave, Solutionreach, NexHealth, Dialog Health. Also flag any new entrant targeting the same buyer (independent medical or dental practice owner, office manager, practice administrator).
+
+## The four lenses
+Tag every item in every research brief with one or more:
+- [Sales] — a fresh outreach angle: a pain point trending right now, a stat we can quote, a story we can lead with.
+- [Competitor] — a feature, pricing, positioning, hire, partnership, funding, or controversy from a named competitor or category challenger.
+- [Content] — fuel for a LinkedIn post, blog, newsletter, or sales-enablement asset.
+- [Compliance] — HIPAA, FTC healthcare-advertising, state telehealth, or patient-data-privacy change that could affect Valor or its clients.
+
+## Default behavior on every /last30days run
+1. Run the query and produce the standard brief.
+2. Tag each item inline with one or more lens labels in brackets, e.g. "[Sales] [Content]".
+3. At the TOP of the brief, before the items, write:
+   "Top 3 actionables for Valor this week" — three single-sentence bullets, each stating: the actionable, the owner (Mike / sales / content / compliance), and the source link.
+4. Output the full brief in HTML so it pastes cleanly into the "Valor Intel — Brief Archive" Google Doc.
+
+## Style
+- Plain prose. No marketing fluff, no "as an AI."
+- Don't recap the query or the methodology — get to the items.
+- If a story appears on multiple platforms, dedupe and cite the highest-engagement source.
+- If a query returns thin signal, say so and suggest 1–2 alternate queries instead of padding.
+- Quote real numbers (engagement counts, percentages, dollar figures) when sources include them.
+
+## Out of scope
+Skip pure-consumer health content (general wellness, recipes, fitness influencers) unless it directly informs a marketing or compliance angle for independent practices.
+```
+
+---
+
+## Appendix B — claude.ai Project: Description
+
+Paste this into the project's **Description** field (the short blurb shown at the top of the project page).
+
+```
+Valor Intel — weekly community-signal research for Valor Promotions Agents
+(veteran-owned AI growth engine for healthcare practices, led by Mike
+Gilbert). Runs the last30days-skill across a 10-query catalog covering
+healthcare-AI trends, named competitors (PatientPop/Tebra, Doctible, Weave,
+NexHealth, Solutionreach, Dialog Health), patient-acquisition signal, and
+HIPAA/FTC/telehealth changes. Every brief is tagged with four lenses —
+[Sales] [Competitor] [Content] [Compliance] — and topped with a "Top 3
+actionables for Valor this week" block. Full HTML briefs go into the Valor
+Intel — Brief Archive Google Doc; the Top 3 actionables get posted to
+#valor-intel-playbook in valor-promotions.slack.com via the Slack MCP.
+Weekly cadence ≈ 30 min: run /last30days for this week's 5-query set (Set A:
+1/3/5/7/9 alternating with Set B: 2/4/6/8/10), paste briefs, ask Claude to
+post the actionables to Slack. Full playbook in valor-intel-playbook.md.
+```
+
+---
+
+## Appendix C — Google Doc: pre-filled first month
+
+Drop this block into the *Valor Intel — Brief Archive* Google Doc; weeks are pre-anchored to the upcoming Mondays.
+
+```
+Valor Intel — Brief Archive
+Owner: Mike Gilbert · Updated weekly · Source: last30days-skill on claude.ai (Valor Intel project)
+
+How this doc works
+- Each week, append a new "Week of …" section below.
+- For each query, paste the HTML brief returned by claude.ai under its heading.
+- Write the Top 3 actionables at the top of the week (one sentence each: actionable · owner · link).
+- Append-only — never delete past weeks. Use Ctrl-F to find recurring themes across months.
+- Sets rotate: Set A = queries 1, 3, 5, 7, 9 · Set B = queries 2, 4, 6, 8, 10.
+
+────────────────────────────────────────────────────────────
+
+Week of 2026-05-11 — Set A
+
+Top 3 actionables for Valor this week
+1. [owner: __] — __ (source: __)
+2. [owner: __] — __ (source: __)
+3. [owner: __] — __ (source: __)
+
+Q1 · AI marketing platforms for medical and dental practices
+Lenses: [Competitor] [Category]
+Run on: 2026-05-11
+<paste HTML brief>
+
+Q3 · Patient reactivation and no-show recovery for private practices
+Lenses: [Sales]
+Run on: 2026-05-11
+<paste HTML brief>
+
+Q5 · HIPAA marketing and patient data privacy 2026
+Lenses: [Compliance]
+Run on: 2026-05-11
+<paste HTML brief>
+
+Q7 · Independent medical practice growth challenges and staffing
+Lenses: [Sales] [Content]
+Run on: 2026-05-11
+<paste HTML brief>
+
+Q9 · Dental practice marketing and patient acquisition
+Lenses: [Sales] [Content]
+Run on: 2026-05-11
+<paste HTML brief>
+
+Triage log
+- Sales hooks sent to Mike: __
+- Competitor moves logged to sheet: __
+- Content ideas added to queue: __
+- Compliance flags raised: __
+
+────────────────────────────────────────────────────────────
+
+Week of 2026-05-18 — Set B
+
+Top 3 actionables for Valor this week
+1. [owner: __] — __ (source: __)
+2. [owner: __] — __ (source: __)
+3. [owner: __] — __ (source: __)
+
+Q2 · PatientPop OR Tebra OR Weave OR NexHealth OR Doctible
+Lenses: [Competitor]
+Run on: 2026-05-18
+<paste HTML brief>
+
+Q4 · Website visitor identification and identity resolution healthcare
+Lenses: [Sales] [Competitor]
+Run on: 2026-05-18
+<paste HTML brief>
+
+Q6 · FTC healthcare advertising rules and patient testimonials
+Lenses: [Compliance]
+Run on: 2026-05-18
+<paste HTML brief>
+
+Q8 · AI chatbots and voice agents for patient intake
+Lenses: [Content] [Competitor]
+Run on: 2026-05-18
+<paste HTML brief>
+
+Q10 · Telehealth regulation state-by-state changes
+Lenses: [Compliance] [Content]
+Run on: 2026-05-18
+<paste HTML brief>
+
+Triage log
+- Sales hooks sent to Mike: __
+- Competitor moves logged to sheet: __
+- Content ideas added to queue: __
+- Compliance flags raised: __
+
+────────────────────────────────────────────────────────────
+
+Week of 2026-05-25 — Set A
+[duplicate the Week of 2026-05-11 block above; bump dates]
+
+────────────────────────────────────────────────────────────
+
+Week of 2026-06-01 — Set B + monthly synthesis
+[duplicate Week of 2026-05-18 block]
+
+End-of-month synthesis — May 2026
+Prompt to paste into the Valor Intel project:
+"Read the four weeks above (2026-05-11, 05-18, 05-25, 06-01) and produce
+the State of Valor's Market — May 2026 summary in ~500 words. Organize by
+the four lenses. Pull the top theme per lens and 2–3 specific actionables
+for next month."
+
+<paste synthesis here>
+```
