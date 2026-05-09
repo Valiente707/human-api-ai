@@ -75,6 +75,37 @@ Four lenses Valor applies to every brief:
 
 ---
 
+## 3a. Slack delivery (`#valor-intel-playbook`)
+
+The Google Doc is the system of record. Slack is the **alert layer** — short, scannable pings so Mike and the team see actionables without opening the doc.
+
+**One-time setup:**
+1. In `valor-promotions.slack.com`, go to <https://api.slack.com/apps> → **Create New App** → **From scratch**. Name it "Valor Intel Bot" and pick the valor-promotions workspace.
+2. Open **Incoming Webhooks** → toggle **Activate Incoming Webhooks** on.
+3. Click **Add New Webhook to Workspace**, pick `#valor-intel-playbook`, click Allow.
+4. Copy the webhook URL (`https://hooks.slack.com/services/...`) and store it in your shell rc:
+   ```
+   export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+   ```
+   Treat it as a secret. Never commit it.
+
+**Send a message** (uses `valor_intel_slack.py` at the repo root, stdlib only — no `pip install`):
+
+```bash
+# One-liner sales hook
+python valor_intel_slack.py --text "Sales hook: 67% of dental practices report no-show rates >15% (Reddit r/Dentistry, 412 upvotes). Story for Mike's outreach."
+
+# Weekly actionables block, from a file
+python valor_intel_slack.py --title "Valor Intel — Week of 2026-05-11" --file weekly-actionables.md
+
+# Pipe a brief in
+cat q1-brief.md | python valor_intel_slack.py --title "Q1: AI marketing platforms"
+```
+
+**Recommended Slack cadence:**
+- After step 5 of the weekly runbook, post a single message titled `Valor Intel — Week of YYYY-MM-DD` with the **Top 3 actionables** block (link out to the Google Doc for the full briefs).
+- For any **[Compliance]** item the operator judges material, post immediately as its own message titled `Compliance flag: <topic>` so it doesn't get buried in the weekly summary.
+
 ## 4. Google Doc template
 
 ```
