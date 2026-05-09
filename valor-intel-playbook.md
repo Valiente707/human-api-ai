@@ -52,25 +52,54 @@ You should get a brief with Reddit/HN items. If you get an empty brief or 403 er
 
 ---
 
-## 1a. Day 0 source setup checklist (15 min, materially better briefs)
+## 1a. Day 0 source setup checklist — full coverage (≈30 min)
 
-`last30days` works out of the box on Reddit / HN / Polymarket / GitHub from a residential IP, but those alone won't surface **competitor moves on X** or **product demos on YouTube** — exactly the signals Valor cares about most. The 15 minutes below makes the difference between a thin Week 1 brief and a useful one.
+The goal is to enable **every source** the upstream `last30days-skill` supports, so each weekly brief draws from the broadest possible signal. Sources break into three setup tiers:
 
-| Source | Why it matters for Valor | Setup | Time |
+### Tier 1 — Free, zero config (always on, residential IP)
+
+| Source | Signal for Valor |
+|---|---|
+| **Reddit** | Unfiltered patient/practitioner takes — r/Dentistry, r/medicine, r/HealthcareIT, r/medical_office. The real opinions Google buries. |
+| **Hacker News** | Developer/founder consensus on AI scribe, voice-agent, EHR integration tooling. |
+| **Polymarket** | Prediction-market odds — rare for healthcare-marketing but watches for competitor M&A or platform-acquisition markets. |
+| **GitHub** | Repo activity, release notes, and PR velocity for AI scribe / patient-intake / EHR vendors. |
+
+Nothing to do. These work the moment you're on your laptop's normal network.
+
+### Tier 2 — Free, one-step setup
+
+| Source | Setup | Time | Signal for Valor |
 |---|---|---|---|
-| **X / Twitter** | Where competitor exec posts, product launches, pricing announcements, and healthcare-AI hot takes live. PatientPop / Tebra / Weave / NexHealth all post here. Drives the **[Competitor]** lens. | Open Chrome/Safari/Firefox and log into <https://x.com>. Stay logged in — the skill picks up the browser session automatically. No API key. | 1 min |
-| **YouTube** | Product demos for voice agents, patient-intake chatbots, AI scribes — the "is this real or vaporware?" check on competitors. Drives the **[Content]** and **[Competitor]** lenses. | macOS: `brew install yt-dlp` &nbsp;·&nbsp; other: `pipx install yt-dlp` | 2 min |
-| **Bluesky** | Smaller volume but high signal post-Twitter exodus; some healthcare-marketing voices have moved here. Drives the **[Sales]** and **[Content]** lenses. | Generate an app password at <https://bsky.app/settings/app-passwords>, then `export BLUESKY_HANDLE=you.bsky.social` and `export BLUESKY_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx`. | 3 min |
+| **X / Twitter** | Log into <https://x.com> in Chrome/Safari/Firefox. The skill picks up the browser session — no API key. | 1 min | Competitor exec posts, product launches, pricing news, healthcare-AI hot takes. Drives **[Competitor]**. |
+| **YouTube** | macOS: `brew install yt-dlp` &nbsp;·&nbsp; other: `pipx install yt-dlp` | 2 min | Product demos for voice agents, patient-intake bots, AI scribes — "is this real or vaporware?" Drives **[Content]** + **[Competitor]**. |
+| **Bluesky** | App password at <https://bsky.app/settings/app-passwords>, then:<br>`export BLUESKY_HANDLE=you.bsky.social`<br>`export BLUESKY_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx` | 3 min | Post-Twitter healthcare voices. Drives **[Sales]** + **[Content]**. |
 
-**Skip for v1:** TikTok / Instagram / Threads / Pinterest (ScrapeCreators API — useful for patient-facing content, less relevant for B2B Valor sales) and Perplexity Sonar / Brave Search (paid, mostly redundant with the four lenses). Revisit only if the briefs feel thin after a month.
+### Tier 3 — Free tier with sign-up (and Perplexity, paid)
 
-**Enable the optional sources at runtime** by setting `INCLUDE_SOURCES` before invoking the skill (or add the line to your shell rc so it's always on):
+| Source | Setup | Time | Signal for Valor |
+|---|---|---|---|
+| **TikTok / Instagram Reels / Threads / Pinterest** | One ScrapeCreators key covers all four. Sign up at <https://scrapecreators.com>, then:<br>`export SCRAPECREATORS_API_KEY=...` | 5 min | Patient-facing content, influencer healthcare takes, visual-culture signal. Drives **[Content]** (and occasionally surfaces **[Sales]** pain-point angles patients are venting about). 10K free calls/month is plenty. |
+| **Perplexity Sonar Pro** | OpenRouter account at <https://openrouter.ai>, generate a key, then:<br>`export OPENROUTER_API_KEY=sk-or-v1-...` | 5 min | Grounded web search with citations — pulls authoritative editorial coverage that engagement-ranked sources miss. **Pay-as-you-go (cheap, ~cents per query).** |
+| **Web (Brave Search)** | <https://brave.com/search/api> — generate a key, then:<br>`export BRAVE_API_KEY=BSA...` | 3 min | Editorial coverage, blog comparisons, vendor landing-page diffs. 2K free queries/month covers Valor's volume with margin. |
+
+### Enable everything at runtime
+
+Add to your shell rc (`~/.zshrc` or `~/.bashrc`) so it's always on:
+
+```bash
+# Valor Intel — full source coverage
+export INCLUDE_SOURCES=x,youtube,bluesky,tiktok,instagram,threads,pinterest,perplexity,web
+export BLUESKY_HANDLE="you.bsky.social"
+export BLUESKY_APP_PASSWORD="xxxx-xxxx-xxxx-xxxx"
+export SCRAPECREATORS_API_KEY="..."
+export OPENROUTER_API_KEY="sk-or-v1-..."
+export BRAVE_API_KEY="BSA..."
 ```
-export INCLUDE_SOURCES=x,youtube,bluesky
-/last30days "AI marketing platforms for medical and dental practices"
-```
 
-**Minimum viable for Week 1:** X login + yt-dlp. Bluesky is the cheap third add-on. Everything else can wait.
+Run `./verify-setup.sh` after exporting — it confirms each env var is set and that auth-free sources are reachable. The `/valor-intel` skill will then query all 13 sources for every brief.
+
+> **Source-name caveat:** the exact tokens in `INCLUDE_SOURCES` are documented in the cloned `~/.claude/skills/last30days/README.md`. If a name doesn't match (e.g., `twitter` vs `x`, `hn` vs `hackernews`), check that README — it's the source of truth.
 
 ---
 

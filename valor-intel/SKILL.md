@@ -9,9 +9,15 @@ A lightweight wrapper around `last30days-skill` that operationalizes the Valor P
 
 ## Prerequisites
 
-- The upstream `last30days-skill` is loaded in the same claude.ai project (you'll invoke it as `/last30days <query>`).
+- The upstream `last30days-skill` is installed at `~/.claude/skills/last30days/` (you'll invoke it as `/last30days <query>`).
 - The Slack MCP is available with `slack_send_message`. Channel `#valor-intel-playbook` in `valor-promotions.slack.com` has channel ID `C0B2KJAUMQT`.
 - Operator context: Valor Promotions Agents — veteran-owned AI growth engine for healthcare practices (medical, dental, private), led by Mike Gilbert.
+
+## Source coverage
+
+Every brief should draw from **all 13 sources** the upstream skill supports — Reddit, X/Twitter, YouTube, TikTok, Instagram Reels, Hacker News, Polymarket, GitHub, Threads, Pinterest, Bluesky, Perplexity Sonar Pro, and Web (Brave). The operator is expected to have run the Day 0 setup (playbook §1a) so all auth env vars are in place and `INCLUDE_SOURCES=x,youtube,bluesky,tiktok,instagram,threads,pinterest,perplexity,web` is exported.
+
+Before running queries: if any source returns auth errors, **report them in the output** rather than silently dropping that source. The operator should know the brief is incomplete so they can fix the auth and re-run.
 
 ## Query catalog
 

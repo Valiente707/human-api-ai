@@ -68,29 +68,61 @@ else
     esac
 fi
 
-# ---------- Optional sources ----------
-section "Optional sources (skip any you don't care about)"
+# ---------- Tier 2: free, one-step setup ----------
+section "Tier 2 sources (free, one-step)"
 if command -v yt-dlp >/dev/null; then
-    pass "yt-dlp on PATH ($(yt-dlp --version 2>&1 | head -1))"
+    pass "yt-dlp on PATH ($(yt-dlp --version 2>&1 | head -1)) — YouTube enabled"
 else
-    warn "yt-dlp not installed — YouTube source disabled. brew install yt-dlp"
+    warn "yt-dlp not installed — YouTube disabled. brew install yt-dlp"
 fi
 
 # X/Twitter cookie sniffing is cross-browser/OS pain. Just remind.
-warn "X/Twitter: open https://x.com in any browser and confirm you're logged in (skill picks up the browser session automatically)"
+warn "X/Twitter: open https://x.com in any browser and confirm you're logged in (skill picks up the browser session)"
 
 if [[ -n "${BLUESKY_HANDLE:-}" && -n "${BLUESKY_APP_PASSWORD:-}" ]]; then
-    pass "Bluesky env vars set ($BLUESKY_HANDLE)"
+    pass "Bluesky configured ($BLUESKY_HANDLE)"
 else
-    warn "Bluesky env vars unset — set BLUESKY_HANDLE and BLUESKY_APP_PASSWORD if you want Bluesky coverage"
+    warn "Bluesky disabled — export BLUESKY_HANDLE and BLUESKY_APP_PASSWORD"
+fi
+
+# ---------- Tier 3: free-tier sign-up + Perplexity (paid) ----------
+section "Tier 3 sources (sign-up / Perplexity paid)"
+if [[ -n "${SCRAPECREATORS_API_KEY:-}" ]]; then
+    pass "ScrapeCreators key set — TikTok, Instagram, Threads, Pinterest enabled"
+else
+    warn "SCRAPECREATORS_API_KEY unset — TikTok/Instagram/Threads/Pinterest disabled. Free 10K calls/mo at https://scrapecreators.com"
+fi
+
+if [[ -n "${OPENROUTER_API_KEY:-}" ]]; then
+    pass "OpenRouter key set — Perplexity Sonar Pro enabled"
+else
+    warn "OPENROUTER_API_KEY unset — Perplexity disabled. Sign up at https://openrouter.ai"
+fi
+
+if [[ -n "${BRAVE_API_KEY:-}" ]]; then
+    pass "Brave Search key set — Web source enabled"
+else
+    warn "BRAVE_API_KEY unset — Web (Brave) disabled. Free 2K queries/mo at https://brave.com/search/api"
 fi
 
 # ---------- Runtime config ----------
 section "Runtime config"
 if [[ -n "${INCLUDE_SOURCES:-}" ]]; then
     pass "INCLUDE_SOURCES=$INCLUDE_SOURCES"
+    # Warn if not full coverage
+    full="x,youtube,bluesky,tiktok,instagram,threads,pinterest,perplexity,web"
+    missing=()
+    for src in ${full//,/ }; do
+        case ",${INCLUDE_SOURCES}," in
+            *,${src},*) ;;
+            *) missing+=("$src") ;;
+        esac
+    done
+    if (( ${#missing[@]} > 0 )); then
+        warn "Not at full coverage. Missing: ${missing[*]}. For all 13 sources: export INCLUDE_SOURCES=$full"
+    fi
 else
-    warn "INCLUDE_SOURCES unset — only Reddit/HN/Polymarket/GitHub will be queried. Recommended: export INCLUDE_SOURCES=x,youtube,bluesky"
+    warn "INCLUDE_SOURCES unset — only Reddit/HN/Polymarket/GitHub will be queried. For full coverage: export INCLUDE_SOURCES=x,youtube,bluesky,tiktok,instagram,threads,pinterest,perplexity,web"
 fi
 
 # ---------- Summary ----------
