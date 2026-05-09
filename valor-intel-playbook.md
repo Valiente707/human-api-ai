@@ -31,8 +31,9 @@ Four lenses Valor applies to every brief:
    > For every research brief in this project, tag each item with one or more of these four lenses — **Sales hook · Competitor move · Content angle · Compliance flag** — and pull a "Top 3 actionables for Valor this week" block to the top of the brief.
 
 3. **Upload the `.skill`** to the project via claude.ai's skill upload UI.
-4. **(Optional, +signal)** Provide browser tokens / API keys for X, YouTube, TikTok, Instagram per the skill README. Without them the skill still works on the free sources.
-5. **Create the Google Doc** "Valor Intel — Brief Archive" with the template in §4. Share with Mike + content/sales leads.
+4. **(Optional but recommended)** Also upload the **Valor Intel skill** at `valor-intel/SKILL.md` in this repo. It's a lightweight wrapper that lets you invoke the entire weekly routine (5 queries, four-lens tagging, Top 3 actionables, Slack post) in one shot. Composes with the upstream `last30days-skill`.
+5. **(Optional, +signal)** Provide browser tokens / API keys for X, YouTube, TikTok, Instagram per the skill README. Without them the skill still works on the free sources.
+6. **Create the Google Doc** "Valor Intel — Brief Archive" with the template in §4. Share with Mike + content/sales leads.
 
 ---
 
